@@ -45,7 +45,7 @@ public class Bird{
 	
 	}
 	
-	public void show() {
+	public void render() {
 		parent.pushMatrix();
 		parent.lights();
 		parent.noStroke();

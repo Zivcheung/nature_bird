@@ -1,14 +1,22 @@
 package nature;
+
 import processing.core.PApplet;
 import processing.core.PVector;
-import nature.Bird;
+
+
+
 
 import peasy.PeasyCam;
+
+import nature.Bird;
+import nature.Flock;
+
+
 //import processing.event.*;
 
 
 public class Processing_wrap extends PApplet{
-	Bird bird_a;
+	Flock flock;
 	PeasyCam cam;
 	
 	public static void main(String[] args) {
@@ -17,21 +25,28 @@ public class Processing_wrap extends PApplet{
 	}
 	
 	public void settings() {
-		size(800,800,P3D);
+		size(1200,800,P3D);
 	}
 	public void setup() {
-	    bird_a=new Bird(this);
-	    bird_a.set_velocity(new PVector(200,0,0));
-	    cam=new PeasyCam(this,400);
+	    cam=new PeasyCam(this,800);
+	    flock=new Flock();
+	    
+	    for(int j=0;j<10;j++) {
+	    	
+	    	for(int i=0; i<10; i++) {
+	    		
+	    		for(int d=0; d<10;d++) {
+	    			flock.add_bird(new Bird(this,j*20,i*20,d*20));
+	    		}
+	    	}
+	    }
 	}
 	
 	public void draw() {
-	    background(200);
-		PVector target=new PVector(500,500,500);
-		bird_a.steer(target);
-		bird_a.update();
-		bird_a.show();
-		
+	    background(50);
+	    System.out.println("in sep");
+	    flock.run();
+
 	}
 }
 

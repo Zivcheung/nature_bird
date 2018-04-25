@@ -15,7 +15,7 @@ public class Flock {
 	}
 	void run() {
 		for(Bird b:birds) {
-			b.run();
+			b.run(birds);
 		}
 	}
 	void add_bird(Bird b) {

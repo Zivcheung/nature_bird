@@ -1,5 +1,7 @@
 package nature;
 import processing.core.PApplet;
+import processing.core.PGraphics;
+
 import java.util.ArrayList;
 import processing.core.PVector;
 
@@ -11,6 +13,7 @@ public class Bird{
 	float max_speed;
 	//float life_time;
 	private boolean alive;
+//	PGraphics t_box;
 	
 	Bird(PApplet a,float x,float y,float z){
 
@@ -23,12 +26,15 @@ public class Bird{
 		max_speed=2;
 		maxforce=0.1f;
 		//life_time=50;
+//		t_box=parent.createGraphics(parent.width,parent.height,PGraphics.P3D);
 	}
 	
 	public void run(ArrayList<Bird> bs) {
 		flocking(bs);
 		update();
 		render();
+		check_bounds();
+//		render_bounds();
 	}
 	
 	public void render() {
@@ -39,6 +45,18 @@ public class Bird{
 		parent.sphere(2);
 		parent.popMatrix();
 	}
+//	public void render_bounds() {
+//		t_box.beginDraw();
+//		t_box.pushMatrix();
+//		t_box.lights();
+//		t_box.noStroke();
+////		t_box.translate(position.x,position.y,position.z);
+//		t_box.box(boundary.x,boundary.y,boundary.z);
+//		t_box.popMatrix();
+//		t_box.endDraw();
+//		t_box.tint(255, 126);
+////		parent.image(t_box,0,0,0);
+//	}
 
 	
 	public void update() {
@@ -56,21 +74,21 @@ public class Bird{
 		PVector cohe_force=cohesion(bs);
 		
 		sep_force.mult(1f);
-		align_force.mult(0f);
+		align_force.mult(1f);
 		cohe_force.mult(1f);
 		
 		add_force(sep_force);
 		add_force(align_force);
 		add_force(cohe_force);	
 	}
-	 void checkBounds() {
+	 void check_bounds() {
 		    if (position.x > boundary.x) position.x = 0;
-		    if (position.x < 0) position.x = boundary.x;
+		    else if (position.x < 0) position.x = boundary.x;
 		    if (position.y > boundary.y) position.y = 0;
-		    if (position.y < 0) position.y = boundary.y;
+		    else if (position.y < 0) position.y = boundary.y;
 		    if (position.z > boundary.z) position.z = 0;
-		    if (position.z < 0) position.z = boundary.z;
-		  }  
+		    else if (position.z < 0) position.z = boundary.z;
+	 }  
 	 
 	public PVector separation(ArrayList<Bird> bs){
 		float ideal_dist=20f;
@@ -84,7 +102,6 @@ public class Bird{
 				dist_dir.normalize();
 				dist_dir.div(dist);
 				steer.add(dist_dir);
-				count++;
 			}
 		}
 //		if(count>0) {
@@ -94,8 +111,6 @@ public class Bird{
 			steer.normalize();
 			steer.mult(max_speed);
 			steer.sub(velocity);
-			
-
 		}
 		return steer;
 	}
@@ -104,13 +119,11 @@ public class Bird{
 		float neighbor_dist=50f;
 		PVector steer=new PVector(0f,0f,0f);
 		PVector sum=new PVector(0f,0f,0f);
-		int count=0;
 		
 		for(Bird other:bs) {
 			float dist=PVector.dist(this.position, other.position);
 			if(dist>0&&dist<neighbor_dist) {
 				sum.add(other.velocity);
-				count++;
 			}
 		}
 
@@ -140,7 +153,6 @@ public class Bird{
 
 		if(count>0) {
 			sum.div(count);
-			sum.mult(max_speed);
 			steer=fly_to(sum);
 			
 		
@@ -153,7 +165,7 @@ public class Bird{
 		desire.normalize();
 		desire.mult(max_speed);
 		PVector steerforce=PVector.sub(desire,velocity);
-//		steerforce=steerforce.limit(maxforce);
+		steerforce=steerforce.limit(maxforce);
 		
 		
 		return steerforce;

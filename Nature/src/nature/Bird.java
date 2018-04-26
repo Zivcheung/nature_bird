@@ -6,6 +6,7 @@ import processing.core.PVector;
 public class Bird{
 	PApplet parent;
 	PVector position,velocity,acceleration;
+	PVector boundary;
 	float maxforce;
 	float max_speed;
 	//float life_time;
@@ -14,12 +15,13 @@ public class Bird{
 	Bird(PApplet a,float x,float y,float z){
 
 		parent=a;
-		velocity=new PVector(0,0,0); 
+		velocity=new PVector((float)(Math.random()),(float)(Math.random()),(float)(Math.random())); 
 		position=new PVector(x,y,z);
 		acceleration=new PVector(0,0,0);
+		boundary=new PVector(500,500,500);
 		alive=true;
-		max_speed=4;
-		maxforce=0.05f;
+		max_speed=2;
+		maxforce=0.1f;
 		//life_time=50;
 	}
 	
@@ -53,15 +55,23 @@ public class Bird{
 		PVector align_force=alignment(bs);
 		PVector cohe_force=cohesion(bs);
 		
-		sep_force.mult(1.5f);
-		align_force.mult(1f);
+		sep_force.mult(1f);
+		align_force.mult(0f);
 		cohe_force.mult(1f);
 		
 		add_force(sep_force);
 		add_force(align_force);
 		add_force(cohe_force);	
 	}
-	
+	 void checkBounds() {
+		    if (position.x > boundary.x) position.x = 0;
+		    if (position.x < 0) position.x = boundary.x;
+		    if (position.y > boundary.y) position.y = 0;
+		    if (position.y < 0) position.y = boundary.y;
+		    if (position.z > boundary.z) position.z = 0;
+		    if (position.z < 0) position.z = boundary.z;
+		  }  
+	 
 	public PVector separation(ArrayList<Bird> bs){
 		float ideal_dist=20f;
 		PVector steer=new PVector(0f,0f,0f);
@@ -71,7 +81,6 @@ public class Bird{
 			PVector dist_dir=PVector.sub(this.position, other.position);
 			float dist=dist_dir.mag();
 			if(dist>0&&dist<ideal_dist) {
-				//anything wrong put back the normalize!
 				dist_dir.normalize();
 				dist_dir.div(dist);
 				steer.add(dist_dir);
@@ -85,8 +94,8 @@ public class Bird{
 			steer.normalize();
 			steer.mult(max_speed);
 			steer.sub(velocity);
-			steer.limit(maxforce);
-			System.out.println("in sep");
+			
+
 		}
 		return steer;
 	}
@@ -100,18 +109,17 @@ public class Bird{
 		for(Bird other:bs) {
 			float dist=PVector.dist(this.position, other.position);
 			if(dist>0&&dist<neighbor_dist) {
-				//anything wrong put back the normalize!
 				sum.add(other.velocity);
 				count++;
 			}
 		}
 
-		if(steer.mag()>0) {
+		if(sum.mag()>0) {
 			sum.normalize();
 			sum.mult(max_speed);
 			steer=PVector.sub(sum,velocity);
-			steer.limit(maxforce);
-			System.out.println("in al");
+
+
 		}
 		return steer;
 	}
@@ -125,7 +133,6 @@ public class Bird{
 		for(Bird other:bs) {
 			float dist=PVector.dist(this.position, other.position);
 			if(dist>0&&dist<neighbor_dist) {
-				//anything wrong put back the normalize!
 				sum.add(other.position);
 				count++;
 			}
@@ -135,7 +142,8 @@ public class Bird{
 			sum.div(count);
 			sum.mult(max_speed);
 			steer=fly_to(sum);
-			System.out.println("in co");
+			
+		
 		}
 		return steer;
 	}
@@ -145,6 +153,8 @@ public class Bird{
 		desire.normalize();
 		desire.mult(max_speed);
 		PVector steerforce=PVector.sub(desire,velocity);
+//		steerforce=steerforce.limit(maxforce);
+		
 		
 		return steerforce;
 		

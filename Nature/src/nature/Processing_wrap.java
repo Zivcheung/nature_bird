@@ -16,9 +16,7 @@ public class Processing_wrap extends PApplet{
 	Flock flock;
 	PeasyCam cam;
 	int count;
-	int box_width=600;
-	int box_height=600;
-	int box_depth=600;
+	PVector boundary=new PVector(1200,1200,1200);
 	
 	public static void main(String[] args) {
 		// set PApplet to the package
@@ -42,11 +40,11 @@ public class Processing_wrap extends PApplet{
 //	    	}
 //	    }
 	    
-	    for (int i = 0; i < 500; i++) {
+	    for (int i = 0; i < 200; i++) {
 //	        flock.add_bird(new Bird(this,(float)(Math.random()*box_width), 
 //	        		(float)(Math.random()*box_height), 
 //	        		(float)(Math.random()*box_depth)));
-	    	flock.add_bird(new Bird(this,0,0,0));
+	    	flock.add_bird(new Bird(this,boundary.x/2,boundary.y/2,boundary.z/2));
 	
 	    }
 	}
@@ -55,25 +53,26 @@ public class Processing_wrap extends PApplet{
 	    background(50);
 	    directionalLight(255,255,255, 0, 1, -100); 
 	    noFill();
-	    stroke(0);
+	    stroke(255);
 //	    System.out.println(count++);
-	    line(-300,-300,-300, -300,300,-300);
-	    line(-300,-300,300,  -300,300,300);
-	    line(300,-300,300,    300,300,300);
-	    line(300,-300,-300,   300,300,-300);
+	    line(0,0,0,           0,boundary.y,0);
+	    line(0,0,0,           0,0,boundary.z);
+	    line(0,0,0,           boundary.x,0,0);
 	    
-	    line(-300,-300,-300,  300,-300,-300);
-	    line(-300,-300,300,   300,-300,300);
-	    line(-300,300,300,    300,300,300);
-	    line(-300,300,-300,   300,300,-300);
+	    line(boundary.x,boundary.y,boundary.z, boundary.x,0,boundary.z);
+	    line(boundary.x,boundary.y,boundary.z, 0,boundary.y,boundary.z);
+	    line(boundary.x,boundary.y,boundary.z, boundary.x,boundary.y,0);
 	    
-	    line(-300,-300,-300, -300,-300,300);
-	    line(-300,300,-300,  -300,300,300);
-	    line(300,300,-300,    300,300,300);
-	    line(300,-300,-300,   300,-300,300);
+	    line(boundary.x,0,0,                   boundary.x,0,boundary.z);
+	    line(boundary.x,0,0,                   boundary.x,boundary.y,0);
+	    line(0,0,boundary.z,                   boundary.x,0,boundary.z);
+	    line(0,boundary.y,0,                   0,boundary.y,boundary.z);
+	    line(0,boundary.y,boundary.z,          0,0,boundary.z);
+	    line(0,boundary.y,0,                   boundary.x,boundary.y,0);
+	
 	
 	  
-	    flock.run();
+	    flock.optimized_run();
 
 	}
 }

@@ -22,16 +22,16 @@ public class Bird{
 //	PGraphics t_box;
 	
 	Bird(PApplet a,float x,float y,float z){
-		bird_size=3;
+		bird_size=2;
 		parent=a;
 		velocity=new PVector(parent.random(-1,1),parent.random(-1,1),parent.random(-1,1)); 
 		position=new PVector(x,y,z);
 		acceleration=new PVector(0,0,0);
-		boundary=new PVector(600,600,600);
+		boundary=new PVector(1200,1200,1200);
 		alive=true;
 		max_speed=4;
 		maxforce=0.1f;
-		neighbour_scope=100;
+		neighbour_scope=300;
 		//life_time=50;
 //		t_box=parent.createGraphics(parent.width,parent.height,PGraphics.P3D);
 	}
@@ -40,7 +40,8 @@ public class Bird{
 		flocking(bs);
 		update();
 		render();
-		check_bounds();
+//		check_bounds();
+		wall();
 //		render_bounds();
 	}
 	
@@ -67,15 +68,15 @@ public class Bird{
 	    parent.vertex(-3*bird_size,0,2*bird_size);
 	    parent.vertex(-3*bird_size,-2*bird_size,0);
 	    
-	    /* wings
-	    vertex(2*bird_size,0,0);
-	    vertex(-1*bird_size,0,0);
-	    vertex(-1*bird_size,-8*bird_size,flap);
 	    
-	    vertex(2*bird_size,0,0);
-	    vertex(-1*bird_size,0,0);
-	    vertex(-1*bird_size,8*bird_size,flap);
-	    */
+	    parent.vertex(2*bird_size,0,0);
+	    parent.vertex(-1*bird_size,0,0);
+	    parent.vertex(-1*bird_size,-8*bird_size);//wing
+	    
+	    parent.vertex(2*bird_size,0,0);
+	    parent.vertex(-1*bird_size,0,0);
+	    parent.vertex(-1*bird_size,8*bird_size);//wing
+	    
 	    
 	    parent.vertex(-3*bird_size,0,2*bird_size);
 	    parent.vertex(-3*bird_size,2*bird_size,0);
@@ -84,18 +85,8 @@ public class Bird{
 	    //box(10);
 	    parent.popMatrix();
 	}
-//	public void render_bounds() {
-//		t_box.beginDraw();
-//		t_box.pushMatrix();
-//		t_box.lights();
-//		t_box.noStroke();
-////		t_box.translate(position.x,position.y,position.z);
-//		t_box.box(boundary.x,boundary.y,boundary.z);
-//		t_box.popMatrix();
-//		t_box.endDraw();
-//		t_box.tint(255, 126);
-////		parent.image(t_box,0,0,0);
-//	}
+
+	
 
 	
 	public void update() {
@@ -105,7 +96,14 @@ public class Bird{
 		clr_force();
 	}
 	
-
+	PVector avoid(PVector target,boolean weight)
+	  {
+	    PVector steer = new PVector(); //creates vector for steering
+	    steer.set(PVector.sub(position,target)); //steering vector points away from target
+	    if(weight)
+	      steer.mult(1/PApplet.sq(PVector.dist(position,target)));
+	    return steer;
+	  }
 	
 	public void flocking(ArrayList<Bird> bs) {
 		sep_force=separation(bs);
@@ -122,15 +120,24 @@ public class Bird{
 	}
 	
 	 void check_bounds() {
-		    if (position.x > boundary.x/2) position.x =-(boundary.x/2);
-		    if (position.x < -(boundary.x/2)) position.x = boundary.x/2;
-		    if (position.y > boundary.y/2) position.y =-(boundary.y/2);
-		    if (position.y < -(boundary.y/2)) position.y = boundary.y/2;
-		    if (position.z > boundary.z/2) position.z =-(boundary.z/2);
-		    if (position.z < -(boundary.z/2)) position.z = boundary.z/2;
+		    if (position.x > boundary.x) position.x =0;
+		    if (position.x < 0)          position.x = boundary.x;
+		    if (position.y > boundary.y) position.y =0;
+		    if (position.y < 0)   		 position.y = boundary.y;
+		    if (position.z > boundary.z) position.z =0;
+		    if (position.z < 0) 	     position.z = boundary.z;
 
 
 	 }  
+	 
+	 void wall() {
+	      acceleration.add(PVector.mult(avoid(new PVector(position.x,boundary.y,position.z),true),5));
+	      acceleration.add(PVector.mult(avoid(new PVector(position.x,0,position.z),true),5));
+	      acceleration.add(PVector.mult(avoid(new PVector(boundary.x,position.y,position.z),true),5));
+	      acceleration.add(PVector.mult(avoid(new PVector(0,position.y,position.z),true),5));
+	      acceleration.add(PVector.mult(avoid(new PVector(position.x,position.y,300),true),5));
+	      acceleration.add(PVector.mult(avoid(new PVector(position.x,position.y,900),true),5));
+	 }
 	//separation return sum of all repulse and scaled inversely proportional to distance
 	public PVector separation(ArrayList<Bird> bs){
 		PVector rep_sum=new PVector(0f,0f,0f);//sum of repulse force

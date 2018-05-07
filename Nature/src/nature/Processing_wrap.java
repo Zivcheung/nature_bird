@@ -8,6 +8,7 @@ import peasy.PeasyCam;
 
 import nature.Bird;
 import nature.Flock;
+import nature.Screen;
 
 //import processing.event.*;
 
@@ -17,6 +18,7 @@ public class Processing_wrap extends PApplet{
 	PeasyCam cam;
 	int count;
 	PVector boundary=new PVector(1200,1200,1200);
+	Screen screen;
 	
 	public static void main(String[] args) {
 		// set PApplet to the package
@@ -29,7 +31,7 @@ public class Processing_wrap extends PApplet{
 	public void setup() {
 	    cam=new PeasyCam(this,800);
 	    flock=new Flock();
-	    
+	    screen=new Screen(this);
 //	    for(int j=0;j<5;j++) {
 //	    	
 //	    	for(int i=0; i<5; i++) {
@@ -47,6 +49,7 @@ public class Processing_wrap extends PApplet{
 	    	flock.add_bird(new Bird(this,boundary.x/2,boundary.y/2,boundary.z/2));
 	
 	    }
+	    screen.load_points();
 	}
 	
 	public void draw() {
@@ -73,6 +76,7 @@ public class Processing_wrap extends PApplet{
 	
 	  
 	    flock.optimized_run();
+	    screen.run();
 
 	}
 }

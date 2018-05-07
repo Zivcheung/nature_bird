@@ -29,8 +29,8 @@ public class Bird{
 		acceleration=new PVector(0,0,0);
 		boundary=bound;
 		alive=true;
-		max_speed=6;
-		maxforce=0.1f;
+		max_speed=5;
+		maxforce=0.06f;
 		neighbour_scope=300;
 		//life_time=50;
 //		t_box=parent.createGraphics(parent.width,parent.height,PGraphics.P3D);

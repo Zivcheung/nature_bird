@@ -27,7 +27,8 @@ public class Processing_wrap extends PApplet{
 	}
 	
 	public void settings() {
-		size(1200,800,P3D);
+		fullScreen(P3D);
+//		size(1200,800,P3D);
 	}
 	public void setup() {
 	    cam=new PeasyCam(this,800);
@@ -52,20 +53,21 @@ public class Processing_wrap extends PApplet{
 	    stroke(255);
 //	    System.out.println(count++);
 	    
-	    line(0,0,0,           0,boundary.y,0);
-	    line(0,0,0,           0,0,boundary.z);
-	    line(0,0,0,           boundary.x,0,0);
-	    
-	    line(boundary.x,boundary.y,boundary.z, boundary.x,0,boundary.z);
-	    line(boundary.x,boundary.y,boundary.z, 0,boundary.y,boundary.z);
-	    line(boundary.x,boundary.y,boundary.z, boundary.x,boundary.y,0);
-	    
-	    line(boundary.x,0,0,                   boundary.x,0,boundary.z);
-	    line(boundary.x,0,0,                   boundary.x,boundary.y,0);
-	    line(0,0,boundary.z,                   boundary.x,0,boundary.z);
-	    line(0,boundary.y,0,                   0,boundary.y,boundary.z);
-	    line(0,boundary.y,boundary.z,          0,0,boundary.z);
-	    line(0,boundary.y,0,                   boundary.x,boundary.y,0);
+//	    
+//	    line(0,0,0,           0,boundary.y,0);
+//	    line(0,0,0,           0,0,boundary.z);
+//	    line(0,0,0,           boundary.x,0,0);
+//	    
+//	    line(boundary.x,boundary.y,boundary.z, boundary.x,0,boundary.z);
+//	    line(boundary.x,boundary.y,boundary.z, 0,boundary.y,boundary.z);
+//	    line(boundary.x,boundary.y,boundary.z, boundary.x,boundary.y,0);
+//	    
+//	    line(boundary.x,0,0,                   boundary.x,0,boundary.z);
+//	    line(boundary.x,0,0,                   boundary.x,boundary.y,0);
+//	    line(0,0,boundary.z,                   boundary.x,0,boundary.z);
+//	    line(0,boundary.y,0,                   0,boundary.y,boundary.z);
+//	    line(0,boundary.y,boundary.z,          0,0,boundary.z);
+//	    line(0,boundary.y,0,                   boundary.x,boundary.y,0);
 	
 	
 	  

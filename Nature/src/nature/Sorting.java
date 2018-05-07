@@ -44,7 +44,6 @@ class Sorting
       }
     }
   }
-    
   ArrayList<Bird> get(int i, int j, int k) {
     return zones[i][j][k];
   }

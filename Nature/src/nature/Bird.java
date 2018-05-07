@@ -21,13 +21,13 @@ public class Bird{
 	PVector cohe_force;
 //	PGraphics t_box;
 	
-	Bird(PApplet a,float x,float y,float z){
+	Bird(PApplet a,float x,float y,float z,PVector bound){
 		bird_size=2;
 		parent=a;
 		velocity=new PVector(parent.random(-1,1),parent.random(-1,1),parent.random(-1,1)); 
 		position=new PVector(x,y,z);
 		acceleration=new PVector(0,0,0);
-		boundary=new PVector(2000,2200,2000);
+		boundary=bound;
 		alive=true;
 		max_speed=4;
 		maxforce=0.1f;

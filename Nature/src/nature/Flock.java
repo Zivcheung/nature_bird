@@ -39,6 +39,9 @@ public class Flock {
 		  }
 		  flock_center.mult((float)(1.0 / birds.size()));
 	}
+	public Sorting get_sorted() {
+		return cells;
+	}
 	void add_bird(Bird b) {
 		birds.add(b);
 	}

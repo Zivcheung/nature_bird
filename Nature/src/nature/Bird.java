@@ -29,7 +29,7 @@ public class Bird{
 		acceleration=new PVector(0,0,0);
 		boundary=bound;
 		alive=true;
-		max_speed=4;
+		max_speed=6;
 		maxforce=0.1f;
 		neighbour_scope=300;
 		//life_time=50;
@@ -131,12 +131,12 @@ public class Bird{
 	 }  
 	 
 	 void wall() {
-	      acceleration.add(PVector.mult(avoid(new PVector(position.x,boundary.y,position.z),true),5));
-	      acceleration.add(PVector.mult(avoid(new PVector(position.x,0,position.z),true),5));
-	      acceleration.add(PVector.mult(avoid(new PVector(boundary.x,position.y,position.z),true),5));
-	      acceleration.add(PVector.mult(avoid(new PVector(0,position.y,position.z),true),5));
-	      acceleration.add(PVector.mult(avoid(new PVector(position.x,position.y,boundary.z),true),5));
-	      acceleration.add(PVector.mult(avoid(new PVector(position.x,position.y,0),true),5));
+	      acceleration.add(PVector.mult(avoid(new PVector(position.x,boundary.y,position.z),true),15));
+	      acceleration.add(PVector.mult(avoid(new PVector(position.x,0,position.z),true),15));
+	      acceleration.add(PVector.mult(avoid(new PVector(boundary.x,position.y,position.z),true),15));
+	      acceleration.add(PVector.mult(avoid(new PVector(0,position.y,position.z),true),15));
+	      acceleration.add(PVector.mult(avoid(new PVector(position.x,position.y,boundary.z),true),15));
+	      acceleration.add(PVector.mult(avoid(new PVector(position.x,position.y,0),true),15));
 	 }
 	//separation return sum of all repulse and scaled inversely proportional to distance
 	public PVector separation(ArrayList<Bird> bs){

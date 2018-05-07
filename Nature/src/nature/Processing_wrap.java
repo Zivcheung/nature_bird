@@ -33,17 +33,8 @@ public class Processing_wrap extends PApplet{
 	    cam=new PeasyCam(this,800);
 	    flock=new Flock();
 	    screen=new Screen(this);
-//	    for(int j=0;j<5;j++) {
-//	    	
-//	    	for(int i=0; i<5; i++) {
-//	    		
-//	    		for(int d=0; d<5;d++) {
-//	    			flock.add_bird(new Bird(this,j*7,i*7,d*7));
-//	    		}
-//	    	}
-//	    }
 	    
-	    for (int i = 0; i < 500; i++) {
+	    for (int i = 0; i < 1000; i++) {
 //	        flock.add_bird(new Bird(this,(float)(Math.random()*box_width), 
 //	        		(float)(Math.random()*box_height), 
 //	        		(float)(Math.random()*box_depth)));
@@ -55,10 +46,12 @@ public class Processing_wrap extends PApplet{
 	
 	public void draw() {
 	    background(50);
-	    directionalLight(255,255,255, 0, 1, -100); 
+	    ambientLight(255,172,6);
+	    directionalLight(100,50,6, 0, 1, -100); 
 	    noFill();
 	    stroke(255);
 //	    System.out.println(count++);
+	    
 	    line(0,0,0,           0,boundary.y,0);
 	    line(0,0,0,           0,0,boundary.z);
 	    line(0,0,0,           boundary.x,0,0);

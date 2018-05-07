@@ -61,12 +61,12 @@ public class Screen{
 		parent.stroke(255);
 		for(int i=0;i<points.size();i++) {
 			PVector point=points.get(i);
-			float open_radius=300*(open_size[i]/50);
+			float open_radius=150*(open_size[i]/60);
 			System.out.println(open_radius);
 			parent.pushMatrix();
 			parent.translate(point.x,point.y,point.z);
 			parent.rotateX((float)1.88);
-			drawCylinder(1f,open_radius,250f,10);
+			drawCylinder(1f,open_radius,150f,10);
 			parent.popMatrix();
 		}
 	}
@@ -124,7 +124,9 @@ public class Screen{
 	}
 	public void reset_size() {
 		for(int i=0;i<open_size.length;i++) {
-			open_size[i]=1;
+			open_size[i]=open_size[i]-0.5f;
+			open_size[i]=PApplet.constrain(open_size[i], 1, 60);
+			
 		}
 	}
 	
@@ -137,7 +139,7 @@ public class Screen{
 				float distance=PVector.dist(bird.position,machanism_pos);
 				if(distance<detect_rad) {
 					open_size[i]++;
-					open_size[i]=PApplet.constrain(open_size[i], 1, 50);
+					open_size[i]=PApplet.constrain(open_size[i], 1, 60);
 				}
 			}
 			

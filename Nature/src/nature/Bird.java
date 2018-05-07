@@ -27,7 +27,7 @@ public class Bird{
 		velocity=new PVector(parent.random(-1,1),parent.random(-1,1),parent.random(-1,1)); 
 		position=new PVector(x,y,z);
 		acceleration=new PVector(0,0,0);
-		boundary=new PVector(1200,1200,1200);
+		boundary=new PVector(2000,2200,2000);
 		alive=true;
 		max_speed=4;
 		maxforce=0.1f;
@@ -135,8 +135,8 @@ public class Bird{
 	      acceleration.add(PVector.mult(avoid(new PVector(position.x,0,position.z),true),5));
 	      acceleration.add(PVector.mult(avoid(new PVector(boundary.x,position.y,position.z),true),5));
 	      acceleration.add(PVector.mult(avoid(new PVector(0,position.y,position.z),true),5));
-	      acceleration.add(PVector.mult(avoid(new PVector(position.x,position.y,300),true),5));
-	      acceleration.add(PVector.mult(avoid(new PVector(position.x,position.y,900),true),5));
+	      acceleration.add(PVector.mult(avoid(new PVector(position.x,position.y,boundary.z),true),5));
+	      acceleration.add(PVector.mult(avoid(new PVector(position.x,position.y,0),true),5));
 	 }
 	//separation return sum of all repulse and scaled inversely proportional to distance
 	public PVector separation(ArrayList<Bird> bs){

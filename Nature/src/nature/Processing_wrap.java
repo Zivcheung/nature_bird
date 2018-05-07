@@ -17,7 +17,7 @@ public class Processing_wrap extends PApplet{
 	Flock flock;
 	PeasyCam cam;
 	int count;
-	PVector boundary=new PVector(1200,1200,1200);
+	PVector boundary=new PVector(2000,2200,2000);
 	Screen screen;
 	
 	public static void main(String[] args) {
@@ -42,7 +42,7 @@ public class Processing_wrap extends PApplet{
 //	    	}
 //	    }
 	    
-	    for (int i = 0; i < 200; i++) {
+	    for (int i = 0; i < 500; i++) {
 //	        flock.add_bird(new Bird(this,(float)(Math.random()*box_width), 
 //	        		(float)(Math.random()*box_height), 
 //	        		(float)(Math.random()*box_depth)));

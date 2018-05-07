@@ -39,13 +39,54 @@ public class Screen{
 	}
 	
 	public void render_point() {
-		parent.strokeWeight(10);
+		parent.strokeWeight(2);
 		parent.stroke(255);
-		parent.beginShape(PApplet.POINTS);
 		for(PVector point:points) {
-			parent.vertex(point.x,point.y,point.z);	
+			parent.pushMatrix();
+			parent.translate(point.x,point.y,point.z);
+			parent.rotateX((float)1.88);
+			drawCylinder(1f,150f,250f,10);
+			parent.popMatrix();
 		}
-		parent.endShape();
 	}
+	void drawCylinder(float topRadius, float bottomRadius, float tall, int sides) {
+		  float angle = 0;
+		  float angleIncrement = PApplet.TWO_PI / sides;
+		  parent.beginShape(PApplet.QUAD_STRIP);
+		  for (int i = 0; i < sides + 1; ++i) {
+		    parent.vertex(topRadius*PApplet.cos(angle), 0, topRadius*PApplet.sin(angle));
+		    parent.vertex(bottomRadius*PApplet.cos(angle), tall, bottomRadius*PApplet.sin(angle));
+		    angle += angleIncrement;
+		  }
+		  parent.endShape();
+		  
+		  // If it is not a cone, draw the circular top cap
+		  if (topRadius != 0) {
+		    angle = 0;
+		    parent.beginShape(PApplet.TRIANGLE_FAN);
+		    
+		    // Center point
+		    parent.vertex(0, 0, 0);
+		    for (int i = 0; i < sides + 1; i++) {
+		    	parent.vertex(topRadius * PApplet.cos(angle), 0, topRadius * PApplet.sin(angle));
+		      angle += angleIncrement;
+		    }
+		    parent.endShape();
+		  }
+
+		  // If it is not a cone, draw the circular bottom cap
+		  if (bottomRadius != 0) {
+		    angle = 0;
+		    parent.beginShape(PApplet.TRIANGLE_FAN);
+
+		    // Center point
+		    parent.vertex(0, tall, 0);
+		    for (int i = 0; i < sides + 1; i++) {
+		    	parent.vertex(bottomRadius * PApplet.cos(angle), tall, bottomRadius * PApplet.sin(angle));
+		      angle += angleIncrement;
+		    }
+		    parent.endShape();
+		  }
+		}
 
 }

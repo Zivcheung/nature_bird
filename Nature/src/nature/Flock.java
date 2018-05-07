@@ -14,7 +14,7 @@ public class Flock {
 	
 	 Flock() {
 		birds=new ArrayList<Bird>();
-		cells=new Sorting(birds,1500,1500,1500,100);
+		cells=new Sorting(birds,2200,2400,2200,100);
 	}
 	void run() {
 		for(Bird b:birds) {

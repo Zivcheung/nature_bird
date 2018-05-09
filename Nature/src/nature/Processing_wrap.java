@@ -10,6 +10,7 @@ import nature.Bird;
 import nature.Flock;
 import nature.Screen;
 import nature.Sorting;
+import nature.Leader;
 
 //import processing.event.*;
 
@@ -18,8 +19,9 @@ public class Processing_wrap extends PApplet{
 	Flock flock;
 	PeasyCam cam;
 	int count;
-	PVector boundary=new PVector(1600,1700,2000);
+	PVector boundary=new PVector(3500,5000,3000);
 	Screen screen;
+	Leader leader;
 	
 	public static void main(String[] args) {
 		// set PApplet to the package
@@ -27,13 +29,14 @@ public class Processing_wrap extends PApplet{
 	}
 	
 	public void settings() {
-		fullScreen(P3D);
-//		size(1200,800,P3D);
+//		fullScreen(P3D);
+		size(1200,800,P3D);
 	}
 	public void setup() {
 	    cam=new PeasyCam(this,800);
 	    flock=new Flock();
 	    screen=new Screen(this);
+	    leader=new Leader(this,boundary);
 	    
 	    for (int i = 0; i < 1000; i++) {
 //	        flock.add_bird(new Bird(this,(float)(Math.random()*box_width), 
@@ -42,7 +45,8 @@ public class Processing_wrap extends PApplet{
 	    	flock.add_bird(new Bird(this,boundary.x/2,boundary.y/2,boundary.z/2,boundary));
 	
 	    }
-	    screen.initialize();
+//	    screen.initialize();
+	    leader.initialization();
 	}
 	
 	public void draw() {
@@ -54,27 +58,30 @@ public class Processing_wrap extends PApplet{
 //	    System.out.println(count++);
 	    
 //	    
-//	    line(0,0,0,           0,boundary.y,0);
-//	    line(0,0,0,           0,0,boundary.z);
-//	    line(0,0,0,           boundary.x,0,0);
-//	    
-//	    line(boundary.x,boundary.y,boundary.z, boundary.x,0,boundary.z);
-//	    line(boundary.x,boundary.y,boundary.z, 0,boundary.y,boundary.z);
-//	    line(boundary.x,boundary.y,boundary.z, boundary.x,boundary.y,0);
-//	    
-//	    line(boundary.x,0,0,                   boundary.x,0,boundary.z);
-//	    line(boundary.x,0,0,                   boundary.x,boundary.y,0);
-//	    line(0,0,boundary.z,                   boundary.x,0,boundary.z);
-//	    line(0,boundary.y,0,                   0,boundary.y,boundary.z);
-//	    line(0,boundary.y,boundary.z,          0,0,boundary.z);
-//	    line(0,boundary.y,0,                   boundary.x,boundary.y,0);
+	    line(0,0,0,           0,boundary.y,0);
+	    line(0,0,0,           0,0,boundary.z);
+	    line(0,0,0,           boundary.x,0,0);
+	    
+	    line(boundary.x,boundary.y,boundary.z, boundary.x,0,boundary.z);
+	    line(boundary.x,boundary.y,boundary.z, 0,boundary.y,boundary.z);
+	    line(boundary.x,boundary.y,boundary.z, boundary.x,boundary.y,0);
+	    
+	    line(boundary.x,0,0,                   boundary.x,0,boundary.z);
+	    line(boundary.x,0,0,                   boundary.x,boundary.y,0);
+	    line(0,0,boundary.z,                   boundary.x,0,boundary.z);
+	    line(0,boundary.y,0,                   0,boundary.y,boundary.z);
+	    line(0,boundary.y,boundary.z,          0,0,boundary.z);
+	    line(0,boundary.y,0,                   boundary.x,boundary.y,0);
 	
 	
-	  
-	    flock.optimized_run();
-	    Sorting cells=flock.get_sorted();
-	    screen.update_cells(cells);
-	    screen.run();
+	    
+//	    flock.optimized_run();
+//	    Sorting cells=flock.get_sorted();
+//	    screen.update_cells(cells);
+//	    screen.run();
+	    leader.run();
+	    leader.show_path();
+	    
 
 	}
 }

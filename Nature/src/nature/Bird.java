@@ -44,6 +44,12 @@ public class Bird{
 		wall();
 //		render_bounds();
 	}
+	public void run_self() {
+		update();
+		render();
+//		check_bounds();
+		wall();
+	}
 	
 	public void render() {
 		parent.pushMatrix();
@@ -118,6 +124,7 @@ public class Bird{
 		add_force(align_force);
 		add_force(cohe_force);	
 	}
+	
 	
 	 void check_bounds() {
 		    if (position.x > boundary.x) position.x =0;
@@ -207,6 +214,7 @@ public class Bird{
 		}
 		steerforce=PVector.sub(desired,velocity);
 		steerforce.limit(maxforce);
+		add_force(steerforce.mult(3));
 		return steerforce;
 		
 	}

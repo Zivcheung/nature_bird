@@ -14,15 +14,16 @@ public class Screen{
 	Sorting cells;
 	float detect_rad;
 	
-	float[] open_size=new float[105];
+	float[] open_size=new float[378];        //change every time
 	PApplet parent;
+	int sensitivity=60;
 	
 	int rad;//need to be the same with sorting parameter
 	
 	Screen(PApplet chanel){
 		parent=chanel;
 		point_table=parent.loadTable("F:\\3y_sem2_2018\\Computational prototyping\\points_coordinate1.csv");
-		rad=100;
+		rad=200;
 		detect_rad=100f;
 	}
 	
@@ -61,8 +62,8 @@ public class Screen{
 		parent.stroke(255);
 		for(int i=0;i<points.size();i++) {
 			PVector point=points.get(i);
-			float open_radius=150*(open_size[i]/300);
-			System.out.println(open_radius);
+			float open_radius=150*(open_size[i]/sensitivity);
+//			System.out.println(open_radius);
 			parent.pushMatrix();
 			parent.translate(point.x,point.y,point.z);
 			parent.rotateX((float)1.88);
@@ -81,33 +82,33 @@ public class Screen{
 		  }
 		  parent.endShape();
 		  
-		  // If it is not a cone, draw the circular top cap
-		  if (topRadius != 0) {
-		    angle = 0;
-		    parent.beginShape(PApplet.TRIANGLE_FAN);
-		    
-		    // Center point
-		    parent.vertex(0, 0, 0);
-		    for (int i = 0; i < sides + 1; i++) {
-		    	parent.vertex(topRadius * PApplet.cos(angle), 0, topRadius * PApplet.sin(angle));
-		      angle += angleIncrement;
-		    }
-		    parent.endShape();
-		  }
-
-		  // If it is not a cone, draw the circular bottom cap
-		  if (bottomRadius != 0) {
-		    angle = 0;
-		    parent.beginShape(PApplet.TRIANGLE_FAN);
-
-		    // Center point
-		    parent.vertex(0, tall, 0);
-		    for (int i = 0; i < sides + 1; i++) {
-		    	parent.vertex(bottomRadius * PApplet.cos(angle), tall, bottomRadius * PApplet.sin(angle));
-		      angle += angleIncrement;
-		    }
-		    parent.endShape();
-		  }
+//		  // If it is not a cone, draw the circular top cap
+//		  if (topRadius != 0) {
+//		    angle = 0;
+//		    parent.beginShape(PApplet.TRIANGLE_FAN);
+//		    
+//		    // Center point
+//		    parent.vertex(0, 0, 0);
+//		    for (int i = 0; i < sides + 1; i++) {
+//		    	parent.vertex(topRadius * PApplet.cos(angle), 0, topRadius * PApplet.sin(angle));
+//		      angle += angleIncrement;
+//		    }
+//		    parent.endShape();
+//		  }
+//
+//		  // If it is not a cone, draw the circular bottom cap
+//		  if (bottomRadius != 0) {
+//		    angle = 0;
+//		    parent.beginShape(PApplet.TRIANGLE_FAN);
+//
+//		    // Center point
+//		    parent.vertex(0, tall, 0);
+//		    for (int i = 0; i < sides + 1; i++) {
+//		    	parent.vertex(bottomRadius * PApplet.cos(angle), tall, bottomRadius * PApplet.sin(angle));
+//		      angle += angleIncrement;
+//		    }
+//		    parent.endShape();
+//		  }
 		}
 	public void update_cells(Sorting _cells) {
 		cells=_cells;
@@ -125,7 +126,7 @@ public class Screen{
 	public void reset_size() {
 		for(int i=0;i<open_size.length;i++) {
 			open_size[i]=open_size[i]-0.5f;
-			open_size[i]=PApplet.constrain(open_size[i], 1, 300);
+			open_size[i]=PApplet.constrain(open_size[i], 1, sensitivity);
 			
 		}
 	}
@@ -139,7 +140,7 @@ public class Screen{
 				float distance=PVector.dist(bird.position,machanism_pos);
 				if(distance<detect_rad) {
 					open_size[i]++;
-					open_size[i]=PApplet.constrain(open_size[i], 1, 300);
+					open_size[i]=PApplet.constrain(open_size[i], 1, sensitivity);
 				}
 			}
 			

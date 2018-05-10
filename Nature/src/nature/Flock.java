@@ -6,15 +6,22 @@ import java.util.ArrayList;
 
 import nature.Bird;
 import nature.Sorting;
+import nature.Leader;
 
 public class Flock {
 	ArrayList<Bird> birds;
 	Sorting cells;
 	PVector flock_center;
-	
-	 Flock() {
+	PApplet parent;
+	Leader leader;
+	PVector boundary=new PVector(7000,10000,7000);
+	 Flock(PApplet _parent) {
+		parent=_parent;
 		birds=new ArrayList<Bird>();
-		cells=new Sorting(birds,1800,1900,2200,100);
+		leader=new Leader(parent,boundary);
+		cells=new Sorting(birds,10000,10000,10000,200);//not include top	
+		
+	    leader.initialization();
 	}
 	void run() {
 		for(Bird b:birds) {
@@ -23,7 +30,7 @@ public class Flock {
 	}
 	void optimized_run() {
 		cells.update();
-		  
+		leader.run();
 		  // compare bird to other Birds in neighboring zones, and calculate centroid
 		  flock_center = new PVector(0,0,0);
 		  for (int i=0; i < cells.nx; i++) {      
@@ -32,12 +39,13 @@ public class Flock {
 		        ArrayList<Bird> neighbors = cells.getNeighbors(i,j,k);
 		        for (Bird b : cells.get(i,j,k)) {
 		          flock_center.add(b.position.x, b.position.y, b.position.z);
-		          b.run(neighbors);
+		          b.run(neighbors,leader.lead_bird);
 		        }
 		      }
 		    }
 		  }
 		  flock_center.mult((float)(1.0 / birds.size()));
+//		  leader.show_path();
 	}
 	public Sorting get_sorted() {
 		return cells;

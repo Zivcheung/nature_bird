@@ -19,7 +19,7 @@ public class Processing_wrap extends PApplet{
 	Flock flock;
 	PeasyCam cam;
 	int count;
-	PVector boundary=new PVector(3500,5000,3000);
+	PVector boundary=new PVector(7000,10000,7000);
 	Screen screen;
 	Leader leader;
 	
@@ -29,24 +29,27 @@ public class Processing_wrap extends PApplet{
 	}
 	
 	public void settings() {
-//		fullScreen(P3D);
-		size(1200,800,P3D);
+		fullScreen(P3D);
+//		size(1200,800,P3D);
+
 	}
 	public void setup() {
-	    cam=new PeasyCam(this,800);
-	    flock=new Flock();
+	    cam=new PeasyCam(this,4000);
+	    flock=new Flock(this);
 	    screen=new Screen(this);
-	    leader=new Leader(this,boundary);
 	    
-	    for (int i = 0; i < 1000; i++) {
+	    cam.setMinimumDistance(0);
+	    cam.setMaximumDistance(10000);
+	    perspective(PI/3.0f, (float)this.width/(float)this.height, 4000/10.0f, 4000*10.0f);
+	    for (int i = 0; i < 2000; i++) {
 //	        flock.add_bird(new Bird(this,(float)(Math.random()*box_width), 
 //	        		(float)(Math.random()*box_height), 
 //	        		(float)(Math.random()*box_depth)));
-	    	flock.add_bird(new Bird(this,boundary.x/2,boundary.y/2,boundary.z/2,boundary));
+	    	flock.add_bird(new Bird(this,boundary.x/2-1000,boundary.y/2,boundary.z/2,boundary));
 	
 	    }
-//	    screen.initialize();
-	    leader.initialization();
+	    screen.initialize();
+
 	}
 	
 	public void draw() {
@@ -75,12 +78,11 @@ public class Processing_wrap extends PApplet{
 	
 	
 	    
-//	    flock.optimized_run();
-//	    Sorting cells=flock.get_sorted();
-//	    screen.update_cells(cells);
-//	    screen.run();
-	    leader.run();
-	    leader.show_path();
+	    flock.optimized_run();
+	    Sorting cells=flock.get_sorted();
+	    screen.update_cells(cells);
+	    screen.run();
+	    
 	    
 
 	}

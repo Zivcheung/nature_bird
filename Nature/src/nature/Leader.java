@@ -13,7 +13,7 @@ public class Leader {
 	PVector bound;
 	PApplet parent;
 	int prograss;
-	float bird_size=5;
+	float bird_size=20;
 
 
 	public Leader(PApplet _parent,PVector _bound){
@@ -27,12 +27,13 @@ public class Leader {
 	public void initialization() {
 		load_path();
 		inital_leader();
+		lead_bird.max_speed=10;
 	}
 	
 	public void run() {
 		move();
-		lead_bird.run_self();
-		render();
+		lead_bird.run_self(false);
+//		render();
 	}
 	
 	public void load_path() {
@@ -58,10 +59,11 @@ public class Leader {
 	public void move() {
 		lead_bird.steer(path.get(prograss+1),false);
 		float dist=PVector.dist(path.get(prograss+1), lead_bird.position);
-		if(dist<20) {
+		if(dist<30) {
 			prograss++;
+			if(prograss>path.size()) prograss=0;
 		}
-		System.out.println(prograss);
+//		System.out.println(prograss);
 		
 	}
 	

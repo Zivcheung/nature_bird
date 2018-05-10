@@ -19,21 +19,35 @@ public class Bird{
 	PVector sep_force;
 	PVector align_force;
 	PVector cohe_force;
+	float roller;
 //	PGraphics t_box;
 	
 	Bird(PApplet a,float x,float y,float z,PVector bound){
 		bird_size=2;
 		parent=a;
 		velocity=new PVector(parent.random(-1,1),parent.random(-1,1),parent.random(-1,1)); 
+		velocity=new PVector(0,1,0); 
 		position=new PVector(x,y,z);
 		acceleration=new PVector(0,0,0);
 		boundary=bound;
 		alive=true;
-		max_speed=5;
-		maxforce=0.06f;
+		max_speed=10;
+		maxforce=.4f;
 		neighbour_scope=300;
+		roller=0;
 		//life_time=50;
 //		t_box=parent.createGraphics(parent.width,parent.height,PGraphics.P3D);
+	}
+	
+	public void run(ArrayList<Bird> bs,Bird leader) {
+		flocking(bs);
+		steer(leader.position,1,true);
+		update();
+		render();
+//		check_bounds();
+		wall();
+//		render_bounds();
+		roller+=0.1;
 	}
 	
 	public void run(ArrayList<Bird> bs) {
@@ -44,9 +58,10 @@ public class Bird{
 		wall();
 //		render_bounds();
 	}
-	public void run_self() {
+	public void run_self(boolean show) {
 		update();
-		render();
+		if(show) render();
+		
 //		check_bounds();
 		wall();
 	}
@@ -105,9 +120,12 @@ public class Bird{
 	PVector avoid(PVector target,boolean weight)
 	  {
 	    PVector steer = new PVector(); //creates vector for steering
-	    steer.set(PVector.sub(position,target)); //steering vector points away from target
-	    if(weight)
-	      steer.mult(1/PApplet.sq(PVector.dist(position,target)));
+	    PVector temp_steer=PVector.sub(position,target); //steering vector points away from target
+	    float dist=temp_steer.mag();
+	    if(dist<100) {
+		    if(weight)
+		      steer=temp_steer.mult(1/PApplet.sq(PVector.dist(position,target)));
+	    }
 	    return steer;
 	  }
 	
@@ -116,13 +134,14 @@ public class Bird{
 		align_force=alignment(bs);
 		cohe_force=cohesion(bs);
 		
-		sep_force.mult(1f);
-		align_force.mult(1f);
+		sep_force.mult(parent.random(20.0f)+1f);
+		align_force.mult(PApplet.sin(roller)*2f+5f);
 		cohe_force.mult(3f);
 		
 		add_force(sep_force);
 		add_force(align_force);
 		add_force(cohe_force);	
+		System.out.println(parent.random(20.0f)+1f);
 	}
 	
 	
@@ -138,12 +157,12 @@ public class Bird{
 	 }  
 	 
 	 void wall() {
-	      acceleration.add(PVector.mult(avoid(new PVector(position.x,boundary.y,position.z),true),15));
-	      acceleration.add(PVector.mult(avoid(new PVector(position.x,0,position.z),true),15));
-	      acceleration.add(PVector.mult(avoid(new PVector(boundary.x,position.y,position.z),true),15));
-	      acceleration.add(PVector.mult(avoid(new PVector(0,position.y,position.z),true),15));
-	      acceleration.add(PVector.mult(avoid(new PVector(position.x,position.y,boundary.z),true),15));
-	      acceleration.add(PVector.mult(avoid(new PVector(position.x,position.y,0),true),15));
+	      acceleration.add(PVector.mult(avoid(new PVector(position.x,boundary.y,position.z),true),800));
+	      acceleration.add(PVector.mult(avoid(new PVector(position.x,0,position.z),true),800));
+	      acceleration.add(PVector.mult(avoid(new PVector(boundary.x,position.y,position.z),true),800));
+	      acceleration.add(PVector.mult(avoid(new PVector(0,position.y,position.z),true),800));
+	      acceleration.add(PVector.mult(avoid(new PVector(position.x,position.y,boundary.z),true),800));
+	      acceleration.add(PVector.mult(avoid(new PVector(position.x,position.y,0),true),800));
 	 }
 	//separation return sum of all repulse and scaled inversely proportional to distance
 	public PVector separation(ArrayList<Bird> bs){
@@ -199,7 +218,49 @@ public class Bird{
 		return steer;
 	}
 	
+	public PVector steer(PVector target,int multiplier, boolean arrival) {
+		float arrivel_dist=100f;
+		PVector desired=new PVector();
+		PVector steerforce=new PVector();
+		desired=PVector.sub(target,position);
+		float dist=desired.mag();
+		desired.normalize();
+		if(dist<arrivel_dist&&arrival) {
+			float m=PApplet.map(dist,0,arrivel_dist,0,max_speed);
+			desired.mult(m);
+		}else {
+			desired.mult(max_speed);
+		}
+		steerforce=PVector.sub(desired,velocity);
+		steerforce.limit(maxforce);
+		add_force(steerforce.mult(multiplier));
+		return steerforce;
+		
+	}
+	
 	public PVector steer(PVector target, boolean arrival) {
+		float arrivel_dist=100f;
+		PVector desired=new PVector();
+		PVector steerforce=new PVector();
+		desired=PVector.sub(target,position);
+		float dist=desired.mag();
+		desired.normalize();
+		if(dist<arrivel_dist&&arrival) {
+			float m=PApplet.map(dist,0,arrivel_dist,0,max_speed);
+			desired.mult(m);
+		}else {
+			desired.mult(max_speed);
+		}
+		steerforce=PVector.sub(desired,velocity);
+		steerforce.limit(maxforce);
+		add_force(steerforce.mult(3));
+		return steerforce;
+		
+	}
+	
+	
+	public PVector steer(PVector target) {
+		boolean arrival=false;
 		float arrivel_dist=100f;
 		PVector desired=new PVector();
 		PVector steerforce=new PVector();

@@ -15,6 +15,7 @@ public class Flock {
 	PApplet parent;
 	Leader leader;
 	PVector boundary=new PVector(7000,10000,7000);
+	float speed,force,sep_multipler,co_multipler,ali_multipler;
 	 Flock(PApplet _parent) {
 		parent=_parent;
 		birds=new ArrayList<Bird>();
@@ -52,6 +53,11 @@ public class Flock {
 	}
 	void add_bird(Bird b) {
 		birds.add(b);
+	}
+	void set_speed() {
+		for(Bird b:birds) {
+			b.max_speed=
+		}
 	}
 
 }

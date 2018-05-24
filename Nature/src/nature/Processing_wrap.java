@@ -2,8 +2,9 @@ package nature;
 
 import processing.core.PApplet;
 import processing.core.PVector;
-import processing.opengl.*;
 
+import ddf.minim.analysis.*;
+import ddf.minim.*;
 
 
 import peasy.PeasyCam;
@@ -22,10 +23,20 @@ public class Processing_wrap extends PApplet{
 	Flock flock;
 	PeasyCam cam;
 	ControlP5 cp5;
+	//
+	Minim minim;
+	AudioPlayer music;
+	FFT fft;
+	String windowName;
+	
+	//
 	int count;
 	PVector boundary=new PVector(7000,10000,7000);
 	Screen screen;
 	Leader leader;
+	
+	int bands = 512;
+	float[] spectrum = new float[bands];
 	
 	public static void main(String[] args) {
 		// set PApplet to the package
@@ -45,6 +56,11 @@ public class Processing_wrap extends PApplet{
 	    
 	    cam.setMinimumDistance(0);
 	    cam.setMaximumDistance(10000);
+	    
+	    minim = new Minim(this);
+	    music = minim.loadFile("jingle.mp3", 512);
+	    music.loop();
+	    
 	    perspective(PI/3.0f, (float)this.width/(float)this.height, 4000/10.0f, 4000*10.0f);
 	    for (int i = 0; i < 1000; i++) {
 //	        flock.add_bird(new Bird(this,(float)(Math.random()*box_width), 
@@ -63,11 +79,20 @@ public class Processing_wrap extends PApplet{
 	  
 		dis_cam();//disable peasycam while dragging slider
 	    background(50);
-	    ambientLight(255,172,6);
-	    directionalLight(100,50,6, 0, 1, -100); 
+	    colorMode(HSB,360,100,100);
+	    fft.forward(music.mix);
+	    int i =10;
+        float bandDB = 20 * log( 2 * fft.getBand(i) / fft.timeSize() );
+      // given some reasonable range
+        float bandHeight = map( bandDB, 0, -150, 0, 44 );
+        float band = map( bandDB, 0, -150, 0, 100 );
+	    ambientLight(bandHeight,100,100);
+	    
+//	    directionalLight(170,100,100, 0, 1, -100); 
+	    colorMode(RGB,255,255,255);
 	    noFill();
 	    stroke(255);
-  
+	    
 	    line(0,0,0,           0,boundary.y,0);
 	    line(0,0,0,           0,0,boundary.z);
 	    line(0,0,0,           boundary.x,0,0);

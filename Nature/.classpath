@@ -21,5 +21,6 @@
 	<classpathentry kind="lib" path="jogl-all.jar"/>
 	<classpathentry kind="lib" path="peasycam.jar"/>
 	<classpathentry kind="lib" path="libraries/controlP5/library/controlP5.jar"/>
+	<classpathentry kind="lib" path="minim.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

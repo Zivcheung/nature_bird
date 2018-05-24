@@ -20,9 +20,10 @@ public class Flock {
 		parent=_parent;
 		birds=new ArrayList<Bird>();
 		leader=new Leader(parent,boundary);
-		cells=new Sorting(birds,10000,10000,10000,200);//not include top	
-		
+		cells=new Sorting(birds,15000,15000,15000,400);//not include top   and  if change radius screen need to change as well	
 	    leader.initialization();
+	    speed=5f;
+	    
 	}
 	void run() {
 		for(Bird b:birds) {
@@ -41,12 +42,13 @@ public class Flock {
 		        for (Bird b : cells.get(i,j,k)) {
 		          flock_center.add(b.position.x, b.position.y, b.position.z);
 		          b.run(neighbors,leader.lead_bird);
+//		          System.out.println("force: "+b.maxforce+"speed: "+b.max_speed);
 		        }
 		      }
 		    }
 		  }
 		  flock_center.mult((float)(1.0 / birds.size()));
-//		  leader.show_path();
+		  leader.show_path();
 	}
 	public Sorting get_sorted() {
 		return cells;
@@ -54,9 +56,36 @@ public class Flock {
 	void add_bird(Bird b) {
 		birds.add(b);
 	}
-	void set_speed() {
+	void set_force(float force) {
+		System.out.println("force changed"+force);
 		for(Bird b:birds) {
-			b.max_speed=
+			b.maxforce=force;
+			System.out.println("force changed to   "+b.maxforce);
+		}
+	}
+	void set_speed(float speed) {
+		for(Bird b:birds) {
+			b.max_speed=speed;
+		}
+	}
+	void set_align(float multiplier) {
+		for(Bird b:birds) {
+			b.align_multiplier=multiplier;
+		}
+	}
+	void set_cohe(float multiplier) {
+		for(Bird b:birds) {
+			b.cohe_multiplier=multiplier;
+		}
+	}
+	void set_sep(float multiplier) {
+		for(Bird b:birds) {
+			b.sep_multiplier=multiplier;
+		}
+	}
+	void set_chase(float multiplier) {
+		for(Bird b:birds) {
+			b.chase_multiplier=multiplier;
 		}
 	}
 

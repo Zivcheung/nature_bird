@@ -28,12 +28,13 @@ public class Leader {
 		load_path();
 		inital_leader();
 		lead_bird.max_speed=10;
+		lead_bird.maxforce=0.2f;
 	}
 	
 	public void run() {
 		move();
 		lead_bird.run_self(false);
-//		render();
+		render();
 	}
 	
 	public void load_path() {

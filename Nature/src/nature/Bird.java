@@ -19,6 +19,7 @@ public class Bird{
 	PVector sep_force;
 	PVector align_force;
 	PVector cohe_force;
+	float sep_multiplier,cohe_multiplier,align_multiplier,chase_multiplier;
 	float roller;
 //	PGraphics t_box;
 	
@@ -30,10 +31,14 @@ public class Bird{
 		acceleration=new PVector(0,0,0);
 		boundary=bound;
 		alive=true;
-		max_speed=10;//changable
-		maxforce=.4f;//changable
-		neighbour_scope=300;
+		max_speed=5;//changable
+		maxforce=.06f;//changable
+		neighbour_scope=700;
 		roller=0;
+		sep_multiplier=1f;
+		cohe_multiplier=3f;
+		align_multiplier=1f;
+		chase_multiplier=1f;
 		//life_time=50;
 //		t_box=parent.createGraphics(parent.width,parent.height,PGraphics.P3D);
 	}
@@ -133,14 +138,14 @@ public class Bird{
 		align_force=alignment(bs);
 		cohe_force=cohesion(bs);
 		
-		sep_force.mult(parent.random(20.0f)+1f);//changable
-		align_force.mult(PApplet.sin(roller)*2f+5f);//changable
-		cohe_force.mult(3f);//changable
+		sep_force.mult(sep_multiplier);//changable
+		align_force.mult(align_multiplier);//changable
+		cohe_force.mult(cohe_multiplier);//changable
 		
 		add_force(sep_force);
 		add_force(align_force);
 		add_force(cohe_force);	
-		System.out.println(parent.random(20.0f)+1f);
+		
 	}
 	
 	

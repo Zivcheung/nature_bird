@@ -23,7 +23,7 @@ public class Screen{
 	Screen(PApplet chanel){
 		parent=chanel;
 		point_table=parent.loadTable("F:\\3y_sem2_2018\\Computational prototyping\\points_coordinate1.csv");
-		rad=200;
+		rad=400;
 		detect_rad=100f;
 	}
 	
